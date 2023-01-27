@@ -1,7 +1,12 @@
 ## Tools
 
-- [Ignite-ui](https://www.npmjs.com/org/ignite-ui)
+- [Ignite-ui](https://www.npmjs.com/org/ignite-ui) Design System
 - [Stitches](https://stitches.dev/) CSS-in-JS
+- [ESLint](https://www.npmjs.com/package/@rocketseat/eslint-config) Linter
+
+## Tips
+
+- Run linter fix with `npm run lint -- --fix`
 
 ---
 

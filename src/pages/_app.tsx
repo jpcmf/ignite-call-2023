@@ -1,10 +1,10 @@
-import type { AppProps } from 'next/app';
+import type { AppProps } from 'next/app'
 
-import { globalStyles } from '../styles/global';
+import { globalStyles } from '../styles/global'
 
 // TODO: keep this call out off the main func prevent globalstyle load everytime
-globalStyles();
+globalStyles()
 
 export default function App({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />;
+  return <Component {...pageProps} />
 }
