@@ -1,3 +1,10 @@
+## Tools
+
+- [Ignite-ui](https://www.npmjs.com/org/ignite-ui)
+- [Stitches](https://stitches.dev/) CSS-in-JS
+
+---
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
