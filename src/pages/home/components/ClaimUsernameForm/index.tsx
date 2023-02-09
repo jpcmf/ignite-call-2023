@@ -3,15 +3,21 @@ import { ArrowRight } from 'phosphor-react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { Form } from './styles'
+import { zodResolver } from '@hookform/resolvers/zod'
 
 const handleWithUsernameFormSchema = z.object({
-  username: z.string(),
+  username: z
+    .string()
+    .min(3)
+    .regex(/^([a-z\\\\-]+)$/i), // do not validate spaces, numbers, special chaaracter
 })
 
 type ClaimUsernameFormData = z.infer<typeof handleWithUsernameFormSchema>
 
 export function ClaimUsernameForm() {
-  const { register, handleSubmit } = useForm<ClaimUsernameFormData>()
+  const { register, handleSubmit } = useForm<ClaimUsernameFormData>({
+    resolver: zodResolver(handleWithUsernameFormSchema),
+  })
 
   async function handleClaimUsername(data: ClaimUsernameFormData) {
     console.log(data)
