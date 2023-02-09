@@ -13,6 +13,7 @@ export const Container = styled('div', {
 export const Hero = styled('div', {
   maxWidth: 480,
   padding: '0 $10',
+  position: 'relative',
 
   [`> ${Heading}`]: {
     'media(max-width: 600px)': {

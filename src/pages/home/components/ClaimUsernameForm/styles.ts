@@ -14,6 +14,8 @@ export const Form = styled(Box, {
 
 export const FormErrorContainer = styled('div', {
   marginTop: '$2',
+  position: 'absolute',
+  bottom: -30,
 
   [`> ${Text}`]: {
     color: '$gray400',
