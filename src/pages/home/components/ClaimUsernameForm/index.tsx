@@ -1,21 +1,26 @@
-import { Button, TextInput } from '@ignite-ui/react'
-import { ArrowRight } from 'phosphor-react'
-import { useForm } from 'react-hook-form'
 import { z } from 'zod'
-import { Form } from './styles'
+import { useForm } from 'react-hook-form'
+import { ArrowRight } from 'phosphor-react'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { Button, Text, TextInput } from '@ignite-ui/react'
+import { Form, FormErrorContainer } from './styles'
 
 const handleWithUsernameFormSchema = z.object({
   username: z
     .string()
-    .min(3)
-    .regex(/^([a-z\\\\-]+)$/i), // do not validate spaces, numbers, special chaaracter
+    .min(3, { message: 'Minímo de 3 caracteres' })
+    .regex(/^([a-z\\\\-]+)$/i, { message: 'Letras e hífens são permetidos' }) // do not validate spaces, numbers, special chaaracter
+    .transform((username) => username.toLowerCase()),
 })
 
 type ClaimUsernameFormData = z.infer<typeof handleWithUsernameFormSchema>
 
 export function ClaimUsernameForm() {
-  const { register, handleSubmit } = useForm<ClaimUsernameFormData>({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<ClaimUsernameFormData>({
     resolver: zodResolver(handleWithUsernameFormSchema),
   })
 
@@ -24,7 +29,7 @@ export function ClaimUsernameForm() {
   }
 
   return (
-    <div>
+    <>
       <Form as="form" onSubmit={handleSubmit(handleClaimUsername)}>
         <TextInput
           size="sm"
@@ -37,6 +42,13 @@ export function ClaimUsernameForm() {
           <ArrowRight />
         </Button>
       </Form>
-    </div>
+
+      <FormErrorContainer>
+        <Text size="sm">
+          {errors.username ? errors.username?.message : null}
+          {/* {errors.username ? errors.username?.message : 'Digite o nome do usuário'} */}
+        </Text>
+      </FormErrorContainer>
+    </>
   )
 }
