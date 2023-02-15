@@ -3,6 +3,8 @@
 - [Ignite-ui](https://www.npmjs.com/org/ignite-ui) Design System
 - [Stitches](https://stitches.dev/) CSS-in-JS
 - [ESLint](https://www.npmjs.com/package/@rocketseat/eslint-config) Linter
+- [React Hook Form](https://github.com/react-hook-form/react-hook-form) Forms
+- [Zod](https://github.com/colinhacks/zod) Form validation
 
 ## Tips
 
