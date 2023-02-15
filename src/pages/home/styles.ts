@@ -13,14 +13,15 @@ export const Container = styled('div', {
 export const Hero = styled('div', {
   maxWidth: 480,
   padding: '0 $10',
+  position: 'relative',
 
-  [`${Heading}`]: {
+  [`> ${Heading}`]: {
     'media(max-width: 600px)': {
       fontSize: '$6xl',
     },
   },
 
-  [`${Text}`]: {
+  [`> ${Text}`]: {
     color: '$gray200',
     marginTop: '$2',
   },
