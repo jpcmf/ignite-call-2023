@@ -1,4 +1,5 @@
 import { z } from 'zod'
+import { api } from '@/src/lib/axios'
 import { useForm } from 'react-hook-form'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
@@ -38,6 +39,14 @@ export default function Register() {
 
   async function handleRegister(data: RegisterFormData) {
     console.log(data)
+    try {
+      await api.post('/users', {
+        name: data.name,
+        username: data.username,
+      })
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   return (
