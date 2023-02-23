@@ -3,6 +3,7 @@ import { api } from '@/src/lib/axios'
 import { useForm } from 'react-hook-form'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
+import { AxiosError } from 'axios'
 import { ArrowRight } from 'phosphor-react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Container, Form, FormErrorContainer, Header } from './styles'
@@ -38,14 +39,18 @@ export default function Register() {
   }, [router.query?.username, setValue])
 
   async function handleRegister(data: RegisterFormData) {
-    console.log(data)
     try {
       await api.post('/users', {
         name: data.name,
         username: data.username,
       })
     } catch (error) {
-      console.log(error)
+      if (error instanceof AxiosError && error.response?.data.message) {
+        alert(error.response.data.message)
+        return
+      }
+
+      console.error(error)
     }
   }
 
