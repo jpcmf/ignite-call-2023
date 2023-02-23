@@ -6,6 +6,7 @@
 - [React Hook Form](https://github.com/react-hook-form/react-hook-form) Forms
 - [Zod](https://github.com/colinhacks/zod) Form validation
 - [Prisma](https://www.prisma.io/) ORM
+- [Nookeis](https://github.com/maticzav/nookies) A collection of cookie helpers for Next.js
 
 ## Tips
 
