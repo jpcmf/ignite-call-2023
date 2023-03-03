@@ -1,10 +1,14 @@
 import { signIn } from 'next-auth/react'
+import { useRouter } from 'next/router'
 import { ArrowRight } from 'phosphor-react'
 import { Container, Header } from '../styles'
-import { ConnectBox, ConnectItem } from './styles'
 import { Button, Heading, MultiStep, Text } from '@ignite-ui/react'
+import { AuthError, ConnectBox, ConnectItem } from './styles'
 
 export default function Register() {
+  const router = useRouter()
+
+  const hasAuthError = !!router.query.error
   //   async function handleRegister() {}
 
   return (
@@ -30,6 +34,13 @@ export default function Register() {
             Conectar <ArrowRight />
           </Button>
         </ConnectItem>
+
+        {hasAuthError && (
+          <AuthError size="sm">
+            Falha ao se conectar ao Google, verifique se você habilitou as
+            permissões de acesso ao Google Calendar.
+          </AuthError>
+        )}
         <Button type="submit">
           Próximo passo <ArrowRight />
         </Button>

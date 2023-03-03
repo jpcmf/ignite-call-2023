@@ -42,3 +42,11 @@ prisma/*.db-journal
 
 # others
 client_*.json
+
+# Visual Studio Code
+.vscode
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.history/*
