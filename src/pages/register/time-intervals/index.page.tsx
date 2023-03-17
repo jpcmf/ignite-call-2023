@@ -21,6 +21,7 @@ import { Controller, useFieldArray, useForm } from 'react-hook-form'
 import { getWeekDays } from '@/src/utils/get-week-days'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { convertTimeStringToMinutes } from '@/src/utils/convert-time-string-to-minutes'
+import { api } from '@/src/lib/axios'
 
 const timeIntervalsFormSchema = z.object({
   intervals: z
@@ -30,7 +31,7 @@ const timeIntervalsFormSchema = z.object({
         enabled: z.boolean(),
         startTime: z.string(),
         endTime: z.string(),
-      })
+      }),
     )
     .length(7)
     .transform((intervals) => intervals.filter((interval) => interval.enabled))
@@ -44,18 +45,18 @@ const timeIntervalsFormSchema = z.object({
           startTimeInMinutes: convertTimeStringToMinutes(interval.startTime),
           endTimeInMinutes: convertTimeStringToMinutes(interval.endTime),
         }
-      })
+      }),
     )
     .refine(
       (intervals) =>
         intervals.every(
           (interval) =>
-            interval.endTimeInMinutes - 60 >= interval.startTimeInMinutes
+            interval.endTimeInMinutes - 60 >= interval.startTimeInMinutes,
         ),
       {
         message:
           'O horário final não pode ser igual ou menor do horário inicial.',
-      }
+      },
     ),
 })
 
@@ -91,8 +92,9 @@ export default function TimeIntervals() {
   const intervals = watch('intervals')
 
   async function handleSetTimeIntervals(data: any) {
-    const formData = data as TimeIntervalsFormOutput
-    console.log(formData)
+    const { intervals } = data as TimeIntervalsFormOutput
+    console.log(intervals)
+    await api.post('/users/time-intervals', { intervals })
   }
 
   return (
