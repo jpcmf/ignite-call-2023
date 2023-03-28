@@ -1,10 +1,18 @@
 import { z } from 'zod'
-// import { api } from '@/src/lib/axios'
+import { api } from '@/src/lib/axios'
 import { useForm } from 'react-hook-form'
+import { useRouter } from 'next/router'
 import { ArrowRight } from 'phosphor-react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Container, Header } from '../styles'
-import { Button, Heading, MultiStep, Text, TextArea } from '@ignite-ui/react'
+import {
+  Avatar,
+  Button,
+  Heading,
+  MultiStep,
+  Text,
+  TextArea,
+} from '@ignite-ui/react'
 import { FormAnnotation, ProfileBox } from './styles'
 import { useSession } from 'next-auth/react'
 import { GetServerSideProps } from 'next'
@@ -27,10 +35,15 @@ export default function UpdateProfile() {
   })
 
   const session = useSession()
+  const router = useRouter()
 
-  console.log(session)
+  async function handleUpdateProfile(data: UpdateProfileFormData) {
+    await api.put('/users/profile', {
+      bio: data.bio,
+    })
 
-  async function handleUpdateProfile(data: UpdateProfileFormData) {}
+    await router.push(`/schedule/${session.data?.user.username}`)
+  }
 
   return (
     <Container>
@@ -38,12 +51,16 @@ export default function UpdateProfile() {
         <Heading as="strong">Escreva sobre você.</Heading>
         <Text>Por último, uma breve descrição e uma foto de perfil.</Text>
 
-        <MultiStep size={4} currentStep={1} />
+        <MultiStep size={4} currentStep={4} />
       </Header>
 
       <ProfileBox as="form" onSubmit={handleSubmit(handleUpdateProfile)}>
         <label>
           <Text size="sm">Foto de perfil</Text>
+          <Avatar
+            src={session.data?.user.avatar_url}
+            alt={session.data?.user.name}
+          />
         </label>
         <label>
           <Text size="sm">Sobre você</Text>

@@ -1,4 +1,12 @@
+import { z } from 'zod'
+import { api } from '@/src/lib/axios'
+import { useRouter } from 'next/router'
+import { ArrowRight } from 'phosphor-react'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { getWeekDays } from '@/src/utils/get-week-days'
 import { Container, Header } from '../styles'
+import { convertTimeStringToMinutes } from '@/src/utils/convert-time-string-to-minutes'
+import { Controller, useFieldArray, useForm } from 'react-hook-form'
 import {
   Button,
   Checkbox,
@@ -15,13 +23,6 @@ import {
   IntervalInpus,
   IntervalItem,
 } from './styles'
-import { ArrowRight } from 'phosphor-react'
-import { z } from 'zod'
-import { Controller, useFieldArray, useForm } from 'react-hook-form'
-import { getWeekDays } from '@/src/utils/get-week-days'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { convertTimeStringToMinutes } from '@/src/utils/convert-time-string-to-minutes'
-import { api } from '@/src/lib/axios'
 
 const timeIntervalsFormSchema = z.object({
   intervals: z
@@ -91,10 +92,14 @@ export default function TimeIntervals() {
 
   const intervals = watch('intervals')
 
+  const router = useRouter()
+
   async function handleSetTimeIntervals(data: any) {
     const { intervals } = data as TimeIntervalsFormOutput
-    console.log(intervals)
+
     await api.post('/users/time-intervals', { intervals })
+
+    await router.push('/register/update-profile')
   }
 
   return (
