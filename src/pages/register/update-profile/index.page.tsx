@@ -1,6 +1,7 @@
 import { z } from 'zod'
 import { api } from '@/src/lib/axios'
 import { useForm } from 'react-hook-form'
+import { useRouter } from 'next/router'
 import { ArrowRight } from 'phosphor-react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Container, Header } from '../styles'
@@ -34,11 +35,14 @@ export default function UpdateProfile() {
   })
 
   const session = useSession()
+  const router = useRouter()
 
   async function handleUpdateProfile(data: UpdateProfileFormData) {
     await api.put('/users/profile', {
       bio: data.bio,
     })
+
+    await router.push(`/schedule/${session.data?.user.username}`)
   }
 
   return (
