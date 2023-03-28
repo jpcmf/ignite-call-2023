@@ -1,5 +1,5 @@
 import { z } from 'zod'
-// import { api } from '@/src/lib/axios'
+import { api } from '@/src/lib/axios'
 import { useForm } from 'react-hook-form'
 import { ArrowRight } from 'phosphor-react'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -35,9 +35,11 @@ export default function UpdateProfile() {
 
   const session = useSession()
 
-  console.log(session)
-
-  async function handleUpdateProfile(data: UpdateProfileFormData) {}
+  async function handleUpdateProfile(data: UpdateProfileFormData) {
+    await api.put('/users/profile', {
+      bio: data.bio,
+    })
+  }
 
   return (
     <Container>
@@ -45,7 +47,7 @@ export default function UpdateProfile() {
         <Heading as="strong">Escreva sobre você.</Heading>
         <Text>Por último, uma breve descrição e uma foto de perfil.</Text>
 
-        <MultiStep size={4} currentStep={1} />
+        <MultiStep size={4} currentStep={4} />
       </Header>
 
       <ProfileBox as="form" onSubmit={handleSubmit(handleUpdateProfile)}>
