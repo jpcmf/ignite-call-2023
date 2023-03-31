@@ -1,13 +1,22 @@
-import { styled } from '@ignite-ui/react'
+import { Heading, styled, Text } from '@ignite-ui/react'
 
 export const Container = styled('div', {
-  //   alignItems: 'center',
-  //   border: '1px solid $gray600',
-  //   borderRadius: '$md',
-  //   display: 'flex',
-  //   justifyContent: 'space-between',
-  //   marginBottom: '$4',
-  //   padding: '$4 $6',
+  maxWidth: 852,
+  padding: '0 $4',
+  margin: '$20 auto $4',
 })
 
-export const UserHeader = styled('div', {})
+export const UserHeader = styled('div', {
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+
+  [`> ${Heading}`]: {
+    lineHeight: '$base ',
+    marginTop: '$2',
+  },
+
+  [`> ${Text}`]: {
+    color: '$gray200',
+  },
+})
