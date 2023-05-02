@@ -5,7 +5,7 @@ import {
   CalendarHeader,
   CalendarActions,
   CalendarContainer,
-  CalendarDay,
+  CalendarButton,
 } from './styles'
 import { CaretLeft, CaretRight } from 'phosphor-react'
 import dayjs from 'dayjs'
@@ -135,48 +135,48 @@ export function Calendar() {
         <tbody>
           <tr>
             <td>
-              <CalendarDay disabled>1</CalendarDay>
+              <CalendarButton disabled>1</CalendarButton>
             </td>
             <td>
-              <CalendarDay>1</CalendarDay>
+              <CalendarButton>1</CalendarButton>
             </td>
             <td>
-              <CalendarDay>1</CalendarDay>
+              <CalendarButton>1</CalendarButton>
             </td>
             <td>
-              <CalendarDay>1</CalendarDay>
+              <CalendarButton>1</CalendarButton>
             </td>
             <td>
-              <CalendarDay>1</CalendarDay>
+              <CalendarButton>1</CalendarButton>
             </td>
             <td>
-              <CalendarDay>1</CalendarDay>
+              <CalendarButton>1</CalendarButton>
             </td>
             <td>
-              <CalendarDay>1</CalendarDay>
+              <CalendarButton>1</CalendarButton>
             </td>
           </tr>
           <tr>
             <td>
-              <CalendarDay>1</CalendarDay>
+              <CalendarButton>1</CalendarButton>
             </td>
             <td>
-              <CalendarDay>1</CalendarDay>
+              <CalendarButton>1</CalendarButton>
             </td>
             <td>
-              <CalendarDay>1</CalendarDay>
+              <CalendarButton>1</CalendarButton>
             </td>
             <td>
-              <CalendarDay>1</CalendarDay>
+              <CalendarButton>1</CalendarButton>
             </td>
             <td>
-              <CalendarDay disabled>1</CalendarDay>
+              <CalendarButton disabled>1</CalendarButton>
             </td>
             <td>
-              <CalendarDay>1</CalendarDay>
+              <CalendarButton>1</CalendarButton>
             </td>
             <td>
-              <CalendarDay>1</CalendarDay>
+              <CalendarButton>1</CalendarButton>
             </td>
           </tr>
         </tbody>
