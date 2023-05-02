@@ -38,17 +38,46 @@ export function Calendar() {
     )
 
     const firstWeekDay = currentDate.day()
-    console.log(firstWeekDay)
+    // console.log(firstWeekDay)
 
     const previousMonthDays = Array.from({ length: firstWeekDay })
       .map((_, index) => {
-        return currentDate.subtract(1, 'day')
+        return currentDate.subtract(index + 1, 'day')
       })
       .reverse()
+    // console.log(previousMonthDays)
 
-    console.log(previousMonthDays)
+    const lastDayInCurrentMonth = currentDate.set(
+      'date',
+      currentDate.daysInMonth(),
+    )
 
-    return [...previousMonthDays, ...daysInMonth]
+    const lastWeekDay = lastDayInCurrentMonth.get('day')
+    // console.log(lastWeekDay)
+
+    const nextMonthDays = Array.from({ length: 7 - (lastWeekDay + 1) }).map(
+      (_, index) => {
+        return lastDayInCurrentMonth.add(index + 1, 'day')
+      },
+    )
+    // console.log(nextMonthDays)
+
+    const calendarDays = [
+      ...previousMonthDays.map((date) => {
+        return { date, disabled: true }
+      }),
+      ...daysInMonth.map((date) => {
+        return {
+          date,
+          disabled: false,
+        }
+      }),
+      ...nextMonthDays.map((date) => {
+        return { date, disabled: true }
+      }),
+    ]
+
+    return calendarDays
   }, [currentDate])
 
   console.log(calendarWeeks)
