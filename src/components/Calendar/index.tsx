@@ -9,7 +9,7 @@ import {
 } from './styles'
 import { CaretLeft, CaretRight } from 'phosphor-react'
 import dayjs from 'dayjs'
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 
 export function Calendar() {
   const [currentDate, setCurrentDate] = useState(() => {
@@ -28,6 +28,30 @@ export function Calendar() {
 
   const currentMonth = currentDate.format('MMMM')
   const currentYear = currentDate.format('YYYY')
+
+  const calendarWeeks = useMemo(() => {
+    const daysInMonth = Array.from({ length: currentDate.daysInMonth() }).map(
+      (_, index) => {
+        return currentDate.set('date', index + 1)
+        // .format('YYYY-MM-DD')
+      },
+    )
+
+    const firstWeekDay = currentDate.day()
+    console.log(firstWeekDay)
+
+    const previousMonthDays = Array.from({ length: firstWeekDay })
+      .map((_, index) => {
+        return currentDate.subtract(1, 'day')
+      })
+      .reverse()
+
+    console.log(previousMonthDays)
+
+    return [...previousMonthDays, ...daysInMonth]
+  }, [currentDate])
+
+  console.log(calendarWeeks)
 
   return (
     <CalendarContainer>
