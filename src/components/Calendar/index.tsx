@@ -11,6 +11,17 @@ import { CaretLeft, CaretRight } from 'phosphor-react'
 import dayjs from 'dayjs'
 import { useMemo, useState } from 'react'
 
+interface CalendarDay {
+  date: dayjs.Dayjs
+  disabled: boolean
+}
+interface CalendarWeek {
+  weekNumber: number
+  days: CalendarDay[]
+}
+
+type CalendarWeeks = CalendarWeek[]
+
 export function Calendar() {
   const [currentDate, setCurrentDate] = useState(() => {
     return dayjs().set('date', 1)
@@ -77,7 +88,23 @@ export function Calendar() {
       }),
     ]
 
-    return calendarDays
+    const calendarWeeks = calendarDays.reduce<CalendarWeeks>(
+      (weeks, _, index, original) => {
+        const isNewWeek = index % 7 === 0
+
+        if (isNewWeek) {
+          weeks.push({
+            weekNumber: index / 7 + 1,
+            days: original.slice(index, index + 7),
+          })
+        }
+
+        return weeks
+      },
+      [],
+    )
+
+    return calendarWeeks
   }, [currentDate])
 
   console.log(calendarWeeks)
