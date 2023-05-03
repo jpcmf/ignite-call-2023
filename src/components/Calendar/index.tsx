@@ -75,7 +75,7 @@ export function Calendar() {
       ...daysInMonth.map((date) => {
         return {
           date,
-          disabled: false,
+          disabled: date.endOf('day').isBefore(dayjs().startOf('day')),
         }
       }),
       ...nextMonthDays.map((date) => {
