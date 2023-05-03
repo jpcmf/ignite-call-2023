@@ -68,6 +68,7 @@ export const CalendarBody = styled('table', {
 
   'tbody td': {
     boxSizing: 'border-box',
+    padding: '0.062rem',
   },
 })
 

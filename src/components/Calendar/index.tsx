@@ -44,19 +44,16 @@ export function Calendar() {
     const daysInMonth = Array.from({ length: currentDate.daysInMonth() }).map(
       (_, index) => {
         return currentDate.set('date', index + 1)
-        // .format('YYYY-MM-DD')
       },
     )
 
     const firstWeekDay = currentDate.day()
-    // console.log(firstWeekDay)
 
     const previousMonthDays = Array.from({ length: firstWeekDay })
       .map((_, index) => {
         return currentDate.subtract(index + 1, 'day')
       })
       .reverse()
-    // console.log(previousMonthDays)
 
     const lastDayInCurrentMonth = currentDate.set(
       'date',
@@ -64,14 +61,12 @@ export function Calendar() {
     )
 
     const lastWeekDay = lastDayInCurrentMonth.get('day')
-    // console.log(lastWeekDay)
 
     const nextMonthDays = Array.from({ length: 7 - (lastWeekDay + 1) }).map(
       (_, index) => {
         return lastDayInCurrentMonth.add(index + 1, 'day')
       },
     )
-    // console.log(nextMonthDays)
 
     const calendarDays = [
       ...previousMonthDays.map((date) => {
@@ -133,52 +128,21 @@ export function Calendar() {
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>
-              <CalendarButton disabled>1</CalendarButton>
-            </td>
-            <td>
-              <CalendarButton>1</CalendarButton>
-            </td>
-            <td>
-              <CalendarButton>1</CalendarButton>
-            </td>
-            <td>
-              <CalendarButton>1</CalendarButton>
-            </td>
-            <td>
-              <CalendarButton>1</CalendarButton>
-            </td>
-            <td>
-              <CalendarButton>1</CalendarButton>
-            </td>
-            <td>
-              <CalendarButton>1</CalendarButton>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <CalendarButton>1</CalendarButton>
-            </td>
-            <td>
-              <CalendarButton>1</CalendarButton>
-            </td>
-            <td>
-              <CalendarButton>1</CalendarButton>
-            </td>
-            <td>
-              <CalendarButton>1</CalendarButton>
-            </td>
-            <td>
-              <CalendarButton disabled>1</CalendarButton>
-            </td>
-            <td>
-              <CalendarButton>1</CalendarButton>
-            </td>
-            <td>
-              <CalendarButton>1</CalendarButton>
-            </td>
-          </tr>
+          {calendarWeeks.map((week) => {
+            return (
+              <tr key={week.weekNumber}>
+                {week.days.map((day) => {
+                  return (
+                    <td key={day.date.toString()}>
+                      <CalendarButton disabled={day.disabled}>
+                        {day.date.get('date')}
+                      </CalendarButton>
+                    </td>
+                  )
+                })}
+              </tr>
+            )
+          })}
         </tbody>
       </CalendarBody>
     </CalendarContainer>
