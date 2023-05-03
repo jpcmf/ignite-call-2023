@@ -68,10 +68,11 @@ export const CalendarBody = styled('table', {
 
   'tbody td': {
     boxSizing: 'border-box',
+    padding: '0.062rem',
   },
 })
 
-export const CalendarDay = styled('button', {
+export const CalendarButton = styled('button', {
   all: 'unset',
   width: '100%',
   aspectRatio: '1 / 1',
