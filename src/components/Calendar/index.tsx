@@ -139,7 +139,10 @@ export function Calendar({ selectedDate, onSelectedDate }: CalendarProps) {
                 {week.days.map((day) => {
                   return (
                     <td key={day.date.toString()}>
-                      <CalendarButton disabled={day.disabled}>
+                      <CalendarButton
+                        onClick={() => onSelectedDate(day.date.toDate())}
+                        disabled={day.disabled}
+                      >
                         {day.date.get('date')}
                       </CalendarButton>
                     </td>
