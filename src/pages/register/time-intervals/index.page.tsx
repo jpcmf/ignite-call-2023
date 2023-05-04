@@ -32,7 +32,7 @@ const timeIntervalsFormSchema = z.object({
         enabled: z.boolean(),
         startTime: z.string(),
         endTime: z.string(),
-      })
+      }),
     )
     .length(7)
     .transform((intervals) => intervals.filter((interval) => interval.enabled))
@@ -46,18 +46,18 @@ const timeIntervalsFormSchema = z.object({
           startTimeInMinutes: convertTimeStringToMinutes(interval.startTime),
           endTimeInMinutes: convertTimeStringToMinutes(interval.endTime),
         }
-      })
+      }),
     )
     .refine(
       (intervals) =>
         intervals.every(
           (interval) =>
-            interval.endTimeInMinutes - 60 >= interval.startTimeInMinutes
+            interval.endTimeInMinutes - 60 >= interval.startTimeInMinutes,
         ),
       {
         message:
           'O horário final não pode ser igual ou menor do horário inicial.',
-      }
+      },
     ),
 })
 
