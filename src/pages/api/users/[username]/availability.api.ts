@@ -5,7 +5,7 @@ import { NextApiRequest, NextApiResponse } from 'next'
 
 export default async function handle(
   req: NextApiRequest,
-  res: NextApiResponse
+  res: NextApiResponse,
 ) {
   if (req.method !== 'GET') {
     res.status(405).end()
@@ -59,10 +59,30 @@ export default async function handle(
   const possibleHours = Array.from({ length: endHour - startHour }).map(
     (_, index) => {
       return startHour + index
-    }
+    },
   )
+
+  const blockedTimes = await prisma.scheduling.findMany({
+    select: {
+      date: true, // select just date in this query
+    },
+    where: {
+      user_id: user.id,
+      date: {
+        gte: referenceDate.set('hour', startHour).toDate(),
+        lte: referenceDate.set('hour', endHour).toDate(),
+      },
+    },
+  })
+
+  const availableTimes = possibleHours.filter((hour) => {
+    return !blockedTimes.some(
+      (blockedTime) => blockedTime.date.getHours() === hour,
+    )
+  })
 
   return res.json({
     possibleHours,
+    availableTimes,
   })
 }
