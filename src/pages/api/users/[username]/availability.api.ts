@@ -33,7 +33,10 @@ export default async function handle(
 
   if (isPastDate) {
     // res.status(400).json({ error: 'Past dates are not allowed' })
-    res.json({ availability: [] })
+    res.json({
+      possibleHours: [],
+      availableTimes: [],
+    })
   }
 
   // Timeinterval vs Scheduling
@@ -46,7 +49,10 @@ export default async function handle(
   })
 
   if (!userAvailability) {
-    return res.json({ availability: [] })
+    return res.json({
+      possibleHours: [],
+      availableTimes: [],
+    })
   }
 
   const { time_start_in_minutes, time_end_in_minutes } = userAvailability
