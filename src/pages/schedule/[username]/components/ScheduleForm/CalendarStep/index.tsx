@@ -1,7 +1,7 @@
 import dayjs from 'dayjs'
 import { api } from '@/src/lib/axios'
 import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import {
   Container,
   TimePicker,
@@ -10,6 +10,7 @@ import {
   TimePickerList,
 } from './styles'
 import { Calendar } from '@/src/components/Calendar'
+import { useQuery } from '@tanstack/react-query'
 
 interface Availability {
   possibleHours: number[]
@@ -18,7 +19,6 @@ interface Availability {
 
 export function CalendarStep() {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null)
-  const [availability, setAvailability] = useState<Availability | null>(null)
   const router = useRouter()
 
   const isDateSelected = !!selectedDate
@@ -29,18 +29,24 @@ export function CalendarStep() {
     ? dayjs(selectedDate).format('DD[ de ]MMMM')
     : null
 
-  useEffect(() => {
-    if (!selectedDate) return
+  const selectedDateWithoutTime = selectedDate
+    ? dayjs(selectedDate).format('YYYY-MM-DD')
+    : null
 
-    api
-      .get(`/users/${username}/availability`, {
-        params: { date: dayjs(selectedDate).format('YYYY-MM-DD') },
+  // React Query approach
+  const { data: availability } = useQuery<Availability>(
+    ['availability', selectedDateWithoutTime],
+    async () => {
+      const response = await api.get(`/users/${username}/availability`, {
+        params: { date: selectedDateWithoutTime },
       })
-      .then((response) => {
-        console.log(response.data)
-        setAvailability(response.data)
-      })
-  }, [selectedDate, username])
+
+      return response.data
+    },
+    {
+      enabled: !!selectedDate, // only execute when selectedDate is not null
+    },
+  )
 
   return (
     <Container isTimePickerOpen={isDateSelected}>
@@ -60,17 +66,6 @@ export function CalendarStep() {
                 {String(hour).padStart(2, '0')}:00h
               </TimePickerItem>
             ))}
-
-            {/* <TimePickerItem>09:00h</TimePickerItem> */}
-            {/* <TimePickerItem>10:00h</TimePickerItem> */}
-            {/* <TimePickerItem>11:00h</TimePickerItem> */}
-            {/* <TimePickerItem>12:00h</TimePickerItem> */}
-            {/* <TimePickerItem>13:00h</TimePickerItem> */}
-            {/* <TimePickerItem>14:00h</TimePickerItem> */}
-            {/* <TimePickerItem>15:00h</TimePickerItem> */}
-            {/* <TimePickerItem>16:00h</TimePickerItem> */}
-            {/* <TimePickerItem>17:00h</TimePickerItem> */}
-            {/* <TimePickerItem>18:00h</TimePickerItem> */}
           </TimePickerList>
         </TimePicker>
       )}
