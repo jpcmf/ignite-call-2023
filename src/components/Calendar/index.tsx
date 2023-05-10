@@ -10,10 +10,13 @@ import {
 import { CaretLeft, CaretRight } from 'phosphor-react'
 import dayjs from 'dayjs'
 import { useMemo, useState } from 'react'
+import { useQuery } from '@tanstack/react-query'
+import { api } from '@/src/lib/axios'
+import { useRouter } from 'next/router'
 
 interface CalendarDay {
   date: dayjs.Dayjs
-  disabled: boolean
+  disabled: boolean | undefined
 }
 interface CalendarWeek {
   weekNumber: number
@@ -21,6 +24,10 @@ interface CalendarWeek {
 }
 
 type CalendarWeeks = CalendarWeek[]
+
+interface BlockedDates {
+  blockedWeekDays: number[]
+}
 
 interface CalendarProps {
   selectedDate?: Date | null
@@ -32,7 +39,7 @@ export function Calendar({ selectedDate, onSelectedDate }: CalendarProps) {
     return dayjs().set('date', 1)
   })
 
-  const shortWeekDays = getWeekDays({ short: true })
+  const router = useRouter()
 
   function handlePreviousMonth() {
     setCurrentDate((state) => state.subtract(1, 'month'))
@@ -42,8 +49,29 @@ export function Calendar({ selectedDate, onSelectedDate }: CalendarProps) {
     setCurrentDate((state) => state.add(1, 'month'))
   }
 
+  const shortWeekDays = getWeekDays({ short: true })
+
   const currentMonth = currentDate.format('MMMM')
   const currentYear = currentDate.format('YYYY')
+
+  const username = String(router.query.username)
+
+  // React Query approach
+  const { data: blockedDates } = useQuery<BlockedDates>(
+    ['blocked-dates', currentDate.get('year'), currentDate.get('month')],
+    async () => {
+      const response = await api.get(`/users/${username}/blocked-dates`, {
+        params: {
+          year: currentDate.get('year'),
+          month: currentDate.get('month'),
+        },
+      })
+
+      return response.data
+    },
+  )
+
+  console.log(blockedDates)
 
   const calendarWeeks = useMemo(() => {
     const daysInMonth = Array.from({ length: currentDate.daysInMonth() }).map(
@@ -52,7 +80,7 @@ export function Calendar({ selectedDate, onSelectedDate }: CalendarProps) {
       },
     )
 
-    const firstWeekDay = currentDate.day()
+    const firstWeekDay = currentDate.get('day')
 
     const previousMonthDays = Array.from({ length: firstWeekDay })
       .map((_, index) => {
@@ -80,7 +108,9 @@ export function Calendar({ selectedDate, onSelectedDate }: CalendarProps) {
       ...daysInMonth.map((date) => {
         return {
           date,
-          disabled: date.endOf('day').isBefore(dayjs().startOf('day')),
+          disabled:
+            date.endOf('day').isBefore(new Date()) ||
+            blockedDates?.blockedWeekDays.includes(date.get('day')),
         }
       }),
       ...nextMonthDays.map((date) => {
@@ -105,7 +135,7 @@ export function Calendar({ selectedDate, onSelectedDate }: CalendarProps) {
     )
 
     return calendarWeeks
-  }, [currentDate])
+  }, [currentDate, blockedDates])
 
   return (
     <CalendarContainer>
