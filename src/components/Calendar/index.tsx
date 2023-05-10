@@ -16,7 +16,7 @@ import { useRouter } from 'next/router'
 
 interface CalendarDay {
   date: dayjs.Dayjs
-  disabled: boolean | undefined
+  disabled: boolean
 }
 interface CalendarWeek {
   weekNumber: number
@@ -74,6 +74,10 @@ export function Calendar({ selectedDate, onSelectedDate }: CalendarProps) {
   console.log(blockedDates)
 
   const calendarWeeks = useMemo(() => {
+    if (!blockedDates) {
+      return []
+    }
+
     const daysInMonth = Array.from({ length: currentDate.daysInMonth() }).map(
       (_, index) => {
         return currentDate.set('date', index + 1)
