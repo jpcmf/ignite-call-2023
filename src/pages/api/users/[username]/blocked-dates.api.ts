@@ -63,9 +63,13 @@ export default async function handle(
 
     GROUP BY EXTRACT(DAY FROM S.date),
       ((UTI.time_end_in_minutes - UTI.time_start_in_minutes) / 60)
+
+    HAVING amount >= size
   `
 
   console.log(blockedDatesRaw)
 
-  return res.json({ blockedWeekDays })
+  const blockedDates = blockedDatesRaw.map((blockedDate) => blockedDate.date)
+
+  return res.json({ blockedWeekDays, blockedDates })
 }
