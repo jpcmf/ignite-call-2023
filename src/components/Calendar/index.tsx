@@ -63,7 +63,9 @@ export function Calendar({ selectedDate, onSelectedDate }: CalendarProps) {
       const response = await api.get(`/users/${username}/blocked-dates`, {
         params: {
           year: currentDate.get('year'),
-          month: currentDate.get('month'),
+          // +1 = month starts at 0 different from sql that starts at 1
+          // padStart(2, '0') = 1 => 01
+          month: String(currentDate.get('month') + 1).padStart(2, '0'),
         },
       })
 
