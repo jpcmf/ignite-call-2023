@@ -50,3 +50,6 @@ client_*.json
 !.vscode/launch.json
 !.vscode/extensions.json
 .history/*
+
+# Snyk
+snyk-macos
