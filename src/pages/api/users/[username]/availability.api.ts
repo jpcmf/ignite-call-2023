@@ -8,7 +8,7 @@ export default async function handle(
   res: NextApiResponse,
 ) {
   if (req.method !== 'GET') {
-    res.status(405).end()
+    return res.status(405).end()
   }
 
   const { username } = req.query
@@ -17,7 +17,7 @@ export default async function handle(
   // http://localhost:3333/api/users/username/availability?date=2021-03-01
 
   if (!date) {
-    res.status(400).json({ error: 'Missing date' })
+    return res.status(400).json({ error: 'Missing date' })
   }
 
   const user = await prisma.user.findUnique({
@@ -25,7 +25,7 @@ export default async function handle(
   })
 
   if (!user) {
-    res.status(400).json({ error: 'User not found' })
+    return res.status(400).json({ error: 'User not found' })
   }
 
   const referenceDate = dayjs(date as string)
@@ -43,7 +43,7 @@ export default async function handle(
 
   const userAvailability = await prisma.userTimeInterval.findFirst({
     where: {
-      user_id: user?.id,
+      user_id: user.id,
       week_day: referenceDate.get('day'),
     },
   })
@@ -73,7 +73,7 @@ export default async function handle(
       date: true, // select just date in this query
     },
     where: {
-      user_id: user?.id,
+      user_id: user.id,
       date: {
         gte: referenceDate.set('hour', startHour).toDate(),
         lte: referenceDate.set('hour', endHour).toDate(),

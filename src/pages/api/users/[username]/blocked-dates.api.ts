@@ -7,7 +7,7 @@ export default async function handle(
   res: NextApiResponse,
 ) {
   if (req.method !== 'GET') {
-    res.status(405).end()
+    return res.status(405).end()
   }
 
   const { username } = req.query
@@ -16,7 +16,7 @@ export default async function handle(
   // http://localhost:3333/api/users/username/blocked-dates?year=2023&month=5
 
   if (!year || !month) {
-    res.status(400).json({ error: 'Missing year or month' })
+    return res.status(400).json({ error: 'Missing year or month' })
   }
 
   const user = await prisma.user.findUnique({
@@ -24,7 +24,7 @@ export default async function handle(
   })
 
   if (!user) {
-    res.status(400).json({ error: 'User not found' })
+    return res.status(400).json({ error: 'User not found' })
   }
 
   const availableWeekDays = await prisma.userTimeInterval.findMany({

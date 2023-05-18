@@ -14,6 +14,7 @@ export function ScheduleForm() {
       <ConfirmStep
         schedulingDate={selectedDateTime}
         onCancelConfirmation={handleClearSelectedDateTime}
+        onSaveConfirmation={handleClearSelectedDateTime}
       />
     )
   }
