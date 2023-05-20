@@ -4,6 +4,7 @@ import { SessionProvider } from 'next-auth/react'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { queryClient } from '../lib/react-query'
 import { globalStyles } from '../styles/global'
+import { DefaultSeo } from 'next-seo'
 
 // TODO: keep this call out off the main func prevent globalstyle load everytime
 globalStyles()
@@ -15,6 +16,15 @@ export default function App({
   return (
     <QueryClientProvider client={queryClient}>
       <SessionProvider session={session}>
+        <DefaultSeo
+          openGraph={{
+            type: 'website',
+            locale: 'pt_BR',
+            url: 'https://www.trocar.com.br/',
+            siteName: 'Ignite Call',
+          }}
+        />
+
         <Component {...pageProps} />
       </SessionProvider>
     </QueryClientProvider>
